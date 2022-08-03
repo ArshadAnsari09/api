@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
 const https = require("https");
+require('dotenv').config();
 
 const app = express();
 
@@ -33,11 +34,11 @@ app.post("/", function (req, res) {
 
   const jsonData = JSON.stringify(data);
 
-  const url = "https://us10.api.mailchimp.com/3.0/Lists/4c7080755e";
+  const url = `https://us10.api.mailchimp.com/3.0/Lists/${process.env.MAILCHIMP_LIST_ID}`;
 
   const option = {
     method: "POST",
-    auth: "arshad:2b540ae29f4007cb726f40750c1f8cf4-us10",
+    auth: `arshad:${process.env.MAILCHIMP_API_KEY}`,
   };
   const request = https.request(url, option, function (response) {
 
@@ -58,19 +59,9 @@ app.post("/failure",function(req,res){
   res.redirect("/");
 });
 
-// app.listen(3000, function () {
-//   console.log("Server is running on port 3000");
-// });
-
-//for deploying on heroku we have to change the port name
-// process.env.PORT is a dynamic port
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server is running on port 3000");
 });
 
-//api key
-// 2b540ae29f4007cb726f40750c1f8cf4-us10  //usX
 
-//list id
-// 4c7080755e
